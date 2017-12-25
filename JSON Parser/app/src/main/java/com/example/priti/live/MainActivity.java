@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -21,16 +22,18 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mSearchResultsTextView;
     private String TAG = MainActivity.class.getSimpleName();
+    private int userid;
+    private String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSearchResultsTextView = (TextView) findViewById(R.id.base_string);
         try {
-            //URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com");
+            URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/posts/1");
             //URL githubSearchUrl = new URL("http://api.androidhive.info/contacts/");
-            URL githubSearchUrl = new URL("https://api.github.com/search/repositories?" +
-                    "q=hello&sort=stars");
+            //URL githubSearchUrl = new URL("https://api.github.com/search/repositories?" +
+            //        "q=hello&sort=stars");
             Log.e(TAG, "Response from the url:" + githubSearchUrl);
             new GetContacts().execute(githubSearchUrl);
         } catch (MalformedURLException e) {
@@ -48,15 +51,25 @@ public class MainActivity extends AppCompatActivity {
             String githubSearchResults = null;
             try {
                 githubSearchResults = networkUtils.getResponseFromHttpUrl(searchUrl);
-                /*
+                ///*
                 try {
                     JSONObject jsonObj = new JSONObject(githubSearchResults);
-                    Log.e(TAG, "Running the program"+ jsonObj);
+                    /*
+                    JSONArray posts = jsonObj.getJSONArray("posts");
+                    for (int i = 0; i< posts.length(); i++) {
+                        JSONObject temp = posts.getJSONObject(i);
+                        userid = temp.getInt("userId");
+                        title = temp.getString("title");
+                        Log.e(TAG, "Running the program: Title " + title);
+                    }
+                    */
+                    userid = jsonObj.getInt("userId");
+                    title = jsonObj.getString("title");
                 }
                 catch (final JSONException e){
                     Log.e(TAG, "JSON parsing error:" + e.getMessage());
                 }
-                */
+                //*/
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -67,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String githubSearchResults) {
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                mSearchResultsTextView.setText(githubSearchResults);
+                mSearchResultsTextView.setText(title);
             }
         }
     }
