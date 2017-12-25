@@ -27,8 +27,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mSearchResultsTextView = (TextView) findViewById(R.id.base_string);
         try {
-            URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com");
+            //URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com");
             //URL githubSearchUrl = new URL("http://api.androidhive.info/contacts/");
+            URL githubSearchUrl = new URL("https://api.github.com/search/repositories?" +
+                    "q=hello&sort=stars");
             Log.e(TAG, "Response from the url:" + githubSearchUrl);
             new GetContacts().execute(githubSearchUrl);
         } catch (MalformedURLException e) {
