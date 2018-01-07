@@ -22,6 +22,11 @@
             android:layout_height="wrap_content"
             android:onClick="wait_in_secs"/>
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/secs_demanded"
+            android:text="User's request: "/>
+        <TextView
             android:id="@+id/show_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

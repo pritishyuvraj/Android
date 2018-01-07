@@ -25,13 +25,21 @@ public class MainActivity extends AppCompatActivity {
     }
     public void wait_in_secs(View view){
         Toast.makeText(this, "Clicken on the button", Toast.LENGTH_LONG).show();
-        /*
-        EditText temp = (EditText) findViewById(R.id.seconds);
-        String temp_secs = temp.toString();
-        int secs = Integer.parseInt(temp_secs);
-
+        ///*
+        try {
+            EditText temp = (EditText) findViewById(R.id.seconds);
+            String temp_secs = temp.getText().toString();
+            //Log.e("Exception", "Exception is -> " + temp_secs);
+            int secs = Integer.parseInt(temp_secs);
+            TextView temp2 = (TextView) findViewById(R.id.secs_demanded);
+            temp2.setText("User's demand " + temp_secs);
+        }
+        catch (Exception e){
+            Log.e("Exception", "Exception is -> error " + e);
+            //Log.e("Exception", "Exception is -> " + temp_secs);
+        }
         //secs store no of seconds
-        */
+        //*/
 
         ///*
         wait_class async = new wait_class();
