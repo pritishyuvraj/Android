@@ -25,12 +25,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void wait_in_secs(View view){
         Toast.makeText(this, "Clicken on the button", Toast.LENGTH_LONG).show();
-        ///*
+        int secs;
+        /*
         try {
             EditText temp = (EditText) findViewById(R.id.seconds);
             String temp_secs = temp.getText().toString();
             //Log.e("Exception", "Exception is -> " + temp_secs);
-            int secs = Integer.parseInt(temp_secs);
+            secs = Integer.parseInt(temp_secs);
             TextView temp2 = (TextView) findViewById(R.id.secs_demanded);
             temp2.setText("User's demand " + temp_secs);
         }
@@ -39,15 +40,23 @@ public class MainActivity extends AppCompatActivity {
             //Log.e("Exception", "Exception is -> " + temp_secs);
         }
         //secs store no of seconds
-        //*/
+        */
 
         ///*
-        wait_class async = new wait_class();
+        wait_class async = new wait_class(this);
         //async.execute();
         ///*
         try{
+            EditText temp = (EditText) findViewById(R.id.seconds);
+            String temp_secs = temp.getText().toString();
+            //Log.e("Exception", "Exception is -> " + temp_secs);
+            secs = Integer.parseInt(temp_secs);
+            TextView temp2 = (TextView) findViewById(R.id.secs_demanded);
+            temp2.setText("User's demand " + temp_secs);
 
-            String var = async.execute().get();
+            String var = async.execute(secs).get();
+            //String var2 = async.execute(secs).getStatus().toString();
+            //String var = async.execute(secs).getStatus().toString();
             TextView temp_string = (TextView) findViewById(R.id.show_text);
             temp_string.setText("Output is -> " + var);
             Log.e("Tag", "final output is " + var);
