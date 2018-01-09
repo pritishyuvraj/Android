@@ -34,8 +34,15 @@ public class wait_class extends AsyncTask<Integer, Integer, String> {
     protected String doInBackground(Integer... integers) {
         int time_to_sleep = integers[0];
         for(int i = 0; i<time_to_sleep; i++){
-            SystemClock.sleep(1000);
-            publishProgress(i);
+            try {
+                publishProgress(i);
+                Thread.sleep(1000);
+
+            }
+            catch (InterruptedException e){
+
+            }
+
         }
         return Integer.toString(time_to_sleep);
     }
