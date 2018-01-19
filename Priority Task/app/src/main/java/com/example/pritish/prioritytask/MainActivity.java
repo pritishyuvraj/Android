@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.Log;
@@ -20,8 +21,14 @@ import android.widget.LinearLayout;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     TaskDBHelper db = new TaskDBHelper(this);
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,33 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        display();
+        //display();
+        recycler_display();
+    }
+    public void recycler_display(){
+        recyclerView = (RecyclerView) findViewById(R.id.my_recyler_view);
+        recyclerView.setHasFixedSize(true);
+
+        //Layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        List<String> sno_list = new ArrayList<>();
+        List<String> desc_list = new ArrayList<>();
+        List<String> priority_list = new ArrayList<>();
+        Cursor cursor = db.get_task_description_priority();
+        if(cursor.moveToFirst()){
+            do{
+                int sno = cursor.getInt(0);
+                String desc = cursor.getString(1);
+                String priority = cursor.getString(2);
+                sno_list.add(Integer.toString(sno));
+                desc_list.add(desc);
+                priority_list.add(priority);
+
+            }while (cursor.moveToNext());
+        }
+        mAdapter = new MyAdpater(sno_list, desc_list, priority_list);
+        recyclerView.setAdapter(mAdapter);
     }
     public void display(){
         //Parent Layout

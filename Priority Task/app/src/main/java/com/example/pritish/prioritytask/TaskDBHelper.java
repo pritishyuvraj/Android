@@ -66,4 +66,10 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         //Log.e("bla bla bla", "cursor" + cursor.getString(2));
 
     }
+
+    public void delete_task_description(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, KEY_ID +"=",new String[] {Integer.toString(id)});
+        db.close();
+    }
 }
