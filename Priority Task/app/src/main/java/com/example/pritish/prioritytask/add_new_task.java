@@ -1,11 +1,14 @@
 package com.example.pritish.prioritytask;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -13,11 +16,14 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class add_new_task extends AppCompatActivity {
-
+    TaskDBHelper db = new TaskDBHelper(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_task);
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -29,6 +35,21 @@ public class add_new_task extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     public void added_new_task(View view){
@@ -45,5 +66,13 @@ public class add_new_task extends AppCompatActivity {
         String priority = radioButton.getText().toString();
 
         Log.e("Task Name", "Added Task"+ task + "-> Priority " + priority);
+        try {
+            db.add_task_description_priority(task, priority);
+            db.get_task_description_priority();
+        }
+        catch (Exception e){
+            Log.e("Error", "Error is " + e);
+        }
     }
+
 }

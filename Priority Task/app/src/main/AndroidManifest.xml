@@ -24,7 +24,9 @@
             android:name=".add_new_task"
             android:label="@string/add_new_task"
             android:theme="@style/AppTheme.NoActionBar">
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.pritish.prioritytask.MainActivity"/>
         </activity>
     </application>
 
