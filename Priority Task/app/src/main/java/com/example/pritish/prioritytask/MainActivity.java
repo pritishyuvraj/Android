@@ -56,17 +56,31 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = db.get_task_description_priority();
         if (cursor.moveToFirst()){
             do{
+                int sno = cursor.getInt(0);
                 String desc = cursor.getString(1);
                 String priority = cursor.getString(2);
+
                 //TextView temp = findViewById(R.id.temp);
                 //temp.setText(desc);
                 try {
                     //view = layoutInflater.inflate(R.layout.text_view, parentLayout, false);
                     View myLayout = layoutInflater.inflate(R.layout.text_view, parentLayout, false);
+                    TextView textView2 = (TextView) myLayout.findViewById(R.id.serial_no);
                     TextView textView = (TextView) myLayout.findViewById(R.id.text_);
                     TextView textView1 = (TextView)myLayout.findViewById(R.id.priority);
+                    if (priority.equals("High")) {
+                        textView.setBackgroundResource(R.color.maroon);
+                    }
+                    else if(priority.equals("Medium")){
+                        textView.setBackgroundResource(R.color.orange);
+                    }
+                    else{
+                        textView.setBackgroundResource(R.color.yellow);
+                    }
+                    Log.e("nonsense", "Check->" + priority );
                     textView1.setText(priority);
                     textView.setText(desc);
+                    textView2.setText(Integer.toString(sno));
                     parentLayout.addView(myLayout);
                 }catch (Exception e){
                     Log.e("tag", desc + "exception "+e.toString());
