@@ -82,7 +82,7 @@ def delete_task(task_id):
 
 
 if __name__ == '__main__':
-	app.run(debug = True)
+	app.run(debug = True, port = 8000)
 
 
 	#Commands for transmitting data using RESTful API
