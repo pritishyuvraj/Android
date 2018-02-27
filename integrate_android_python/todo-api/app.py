@@ -81,9 +81,9 @@ def delete_task(task_id):
     return jsonify({'result': True})
 
 
-if __name__ == '__main__':
-	app.run(debug = True)
-
+if __name__ == '__main__':	
+	#app.run(debug = True, port = 5005)
+	app.run(host='http://pyuvraj.pythonanywhere.com/', port = 5006)
 
 	#Commands for transmitting data using RESTful API
 	# curl -i -H "Content-Type: application/json" -X POST -d '{"title": "Read a book"}' http://localhost:5000/todo/api/v1.0/tasks
