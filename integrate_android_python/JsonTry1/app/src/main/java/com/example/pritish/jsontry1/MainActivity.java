@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     // URL to get contacts JSON
     //private static String url = "https://api.androidhive.info/contacts/";
     //private static String url = "http://www.json-generator.com/api/json/get/bUJPAMtZrC?indent=2";
-    private static String url = "http://10.0.2.2:8005/todo/api/v1.0/tasks";
+    private static String url = "http://10.0.0.89:8005/todo/api/v1.0/tasks";
     ArrayList<HashMap<String, String>> contactList;
 
     @Override
