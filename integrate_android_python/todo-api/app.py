@@ -37,11 +37,19 @@ def get_task(task_id):
 
 @app.errorhandler(404)
 def not_found(error):
+	print "Not found"
 	return make_response(jsonify({'error':'Not found'}), 404)
 
 @app.route('/todo/api/v1.0/tasks', methods = ['POST'])
 def create_task():
+	print "Request -> ", request.json, request.values
+	print "TYpe -> ", type(request.values), request.values.values(), request.values.keys()
+	return "Hello Everyone"
+		#temp = request.values
+	#print temp[0]
+	#print "Request 2 -> ", request.stream.readlines(),  dir(request.stream)#, dir(request)
 	if not request.json or not 'title' in request.json:
+		#return jsonify({'task':tasks})
 		abort(400)
 	task = {
 	'id':tasks[-1]['id'] + 1,
@@ -82,8 +90,9 @@ def delete_task(task_id):
 
 
 if __name__ == '__main__':
-	app.run(debug = True, port = 8000)
-
+	# app.run(host = "192.168.1.57",debug = True, port = 8000)
+	# app.run(host = "0.0.0.0",debug = True, port = 8000)
+	app.run(debug = True, port = 8005)
 
 	#Commands for transmitting data using RESTful API
 	# curl -i -H "Content-Type: application/json" -X POST -d '{"title": "Read a book"}' http://localhost:5000/todo/api/v1.0/tasks
