@@ -6,19 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.priti.live.MainActivity">
 
-    <TextView
-        android:id="@+id/base_string"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
+
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -33,9 +23,15 @@
             android:layout_alignParentStart="true">
 
             <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/FoodNames_appear_here"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
+                <TextView
+                    android:id="@+id/test_string"
+                    android:text="Testing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </ScrollView>
 

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("Nothing", "Called us" + user_input );
 
         database = new ArrayList<>();
-        mSearchResultsTextView = (TextView) findViewById(R.id.base_string);
+//        mSearchResultsTextView = (TextView) findViewById(R.id.base_string);
         try {
             //URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/");
 //            URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/posts");
@@ -89,11 +90,13 @@ public class MainActivity extends AppCompatActivity {
                         int id = temp_temp.getInt("id");
                         int userId = temp_temp.getInt("userId");
                         String title = temp_temp.getString("title");
+                        String body = temp_temp.getString("body");
                         Log.e("Tag1", "See the message " + title);
                         HashMap<String, String> temp = new HashMap<>();
                         temp.put("id", Integer.toString(id));
                         temp.put("userid", Integer.toString(userId));
                         temp.put("title", title);
+                        temp.put("body", body);
                         Log.e(TAG, "temp temp this" + title);
                         database.add(temp);
                         Log.e(TAG, "Adding to database"+ temp);
@@ -113,19 +116,40 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String githubSearchResults) {
-            String test = null;
+
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
+                LinearLayout root=(LinearLayout)findViewById(R.id.FoodNames_appear_here);
+                TextView[] t=new TextView[database.size()];
+                LinearLayout.LayoutParams dim=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 for(int i = 0; i<database.size(); i++){
                     HashMap<String, String> temp = new HashMap<>();
                     temp = database.get(i);
+                    t[i]=new TextView(MainActivity.this);
+//                    t[i] = (TextView) findViewById(R.id.test_string);
+//                    t[i] =
+//                t[i].setLayoutParams(dim);
+                    String test = null;
                     for(String key: temp.keySet()){
                         test += key + "-> " + temp.get(key) + "\n";
 
                     }
+                    t[i].setText(test);
+                    root.addView(t[i]);
                 }
-                mSearchResultsTextView.setText(test);
+//                Initial View text
+//                mSearchResultsTextView.setText(test);
 
             }
+//            LinearLayout root=(LinearLayout)findViewById(R.id.FoodNames_appear_here);
+//            TextView[] t=new TextView[10];
+//            LinearLayout.LayoutParams dim=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            for(int i=0;i<10;i++)
+//            {
+//                t[i]=new TextView(MainActivity.this);
+////                t[i].setLayoutParams(dim);
+//                t[i].setText("YOHOHO: "+i);
+//                root.addView(t[i]);
+//            }
         }
     }
 }
