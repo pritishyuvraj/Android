@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 from flask import abort 
 from flask import make_response 
 from flask import request
-
+import time 
 app = Flask(__name__)
 
 tasks = [
@@ -95,7 +95,9 @@ def delete_task(task_id):
 @app.route('/posts/<string:temp_task>')
 def dummy(temp_task):
 	# return jsonify({"id":1, "userId":2, "title":"Hello mom", "body":"sdasdasdasd"})
-	return jsonify([{"id":1, "userId":2, "title":"Hello mom", "body":"sdasdasdasd"}])
+	print temp_task
+	# time.sleep(5)
+	return jsonify([{"id":1, "userId":2, "title":["lol", "lol", "lol"], "body":"sdasdasdasd"}])
 
 if __name__ == '__main__':	
 	app.run(host = "0.0.0.0", debug = True, port = 8000)

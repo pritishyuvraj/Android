@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -36,13 +38,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+    }
+
+    public void on_call_for_REST(View view){
+//        do Nothing
+
+        EditText temp_input = (EditText) findViewById(R.id.foodMessage);
+        String user_input = temp_input.getText().toString();
+        Log.e("Nothing", "Called us" + user_input );
+
         database = new ArrayList<>();
         mSearchResultsTextView = (TextView) findViewById(R.id.base_string);
         try {
             //URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/");
 //            URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/posts");
-            URL githubSearchUrl = new URL("http://148.85.189.171:8000/posts/hello");
-//            URL githubSearchUrl = new URL("https://api.androidhive.info/contacts/");
+            String temp_url = "http://148.85.189.171:8000/posts/"+user_input;
+            Log.e("URl", "temp URL " + temp_url);
+            URL githubSearchUrl = new URL("http://148.85.189.171:8000/posts/"+user_input);
+//            URL githubSearc   hUrl = new URL("https://api.androidhive.info/contacts/");
             //URL githubSearchUrl = new URL("http://api.androidhive.info/contacts/contacts/0/33");
             //URL githubSearchUrl = new URL("https://api.github.com/search/repositories?" +
             //        "q=hello&sort=stars");
@@ -52,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
     public class GetContacts extends AsyncTask<URL, Void, String> {
 
         @Override
@@ -77,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
                         int id = temp_temp.getInt("id");
                         int userId = temp_temp.getInt("userId");
                         String title = temp_temp.getString("title");
-
+                        Log.e("Tag1", "See the message " + title);
                         HashMap<String, String> temp = new HashMap<>();
                         temp.put("id", Integer.toString(id));
                         temp.put("userid", Integer.toString(userId));
                         temp.put("title", title);
-                        Log.e(TAG, "temp temp this" + temp);
+                        Log.e(TAG, "temp temp this" + title);
                         database.add(temp);
                         Log.e(TAG, "Adding to database"+ temp);
                     }
@@ -108,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     temp = database.get(i);
                     for(String key: temp.keySet()){
                         test += key + "-> " + temp.get(key) + "\n";
+
                     }
                 }
                 mSearchResultsTextView.setText(test);

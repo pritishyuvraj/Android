@@ -1,0 +1,4 @@
+Hi how's your chicken? I think we are doing fine here. Hope the food tastes well.
+
+
+curl http://localhost:8000/posts/Hi%20how's%20your%20chicken%20I%20think%20we%20are%20doing%20fine%20here.%20Hope%20the%20food%20tastes%20well.
