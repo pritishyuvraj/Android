@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     // URL to get contacts JSON
     //private static String url = "https://api.androidhive.info/contacts/";
     //private static String url = "http://www.json-generator.com/api/json/get/bUJPAMtZrC?indent=2";
-    private static String url = "http://10.0.0.89:8005/todo/api/v1.0/tasks";
+    private static String url = "http://148.85.189.171:8000/todo/api/v1.0/tasks";
     ArrayList<HashMap<String, String>> contactList;
 
     @Override
@@ -78,19 +78,19 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < contacts.length(); i++) {
                         JSONObject c = contacts.getJSONObject(i);
 
-                        String id = c.getString("description");
-                        String name = c.getString("done");
+//                        String id = c.getString("description");
+//                        String name = c.getString("done");
                         String email = c.getString("id");
-                        String address = c.getString("title");
+//                        String address = c.getString("title");
 
                         // tmp hash map for single contact
                         HashMap<String, String> contact = new HashMap<>();
 
                         // adding each child node to HashMap key => value
-                        contact.put("id", id);
-                        contact.put("name", name);
-                        contact.put("email", email);
-                        contact.put("mobile", address);
+                        contact.put("id", email);
+//                        contact.put("name", name);
+//                        contact.put("email", email);
+//                        contact.put("mobile", address);
 
                         // adding contact to contact list
                         contactList.add(contact);

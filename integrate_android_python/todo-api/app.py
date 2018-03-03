@@ -84,15 +84,16 @@ def update_task(task_id):
 @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
     task = [task for task in tasks if task['id'] == task_id]
+    # task = [1, 2]
     if len(task) == 0:
         abort(404)
     tasks.remove(task[0])
-    return jsonify({'result': True})
+    return jsonify({'result': task_id})
 
 
 
 if __name__ == '__main__':	
-	app.run(host = "0.0.0.0", debug = True, port = 8005)
+	app.run(host = "0.0.0.0", debug = True, port = 8000)
 
 	#Commands for transmitting data using RESTful API
 	# curl -i -H "Content-Type: application/json" -X POST -d '{"title": "Read a book"}' http://localhost:5000/todo/api/v1.0/tasks
