@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 //                    t[i].setText(test);
 //                    root.addView(t[i]);
                 }
-                mAdapter = new MyAdapter(input);
+                mAdapter = new MyAdapter(database);
                 recyclerView.setAdapter(mAdapter);
 //                Initial View text
 //                mSearchResultsTextView.setText(test);
