@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
 //        mSearchResultsTextView = (TextView) findViewById(R.id.base_string);
         try {
             //URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/");
-//            URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/posts");
-            String temp_url = "http://148.85.189.171:8000/posts/"+user_input;
+//            UR    L githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/posts");
+            String temp_url = "http://http://148.85.189.15:8000/posts/"+user_input;
             Log.e("URl", "temp URL " + temp_url);
 //            URL githubSearchUrl = new URL("http://148.85.189.245/posts/"+user_input);
-            URL githubSearchUrl = new URL("http://148.85.189.245:8080/posts/"+user_input);
+            URL githubSearchUrl = new URL("http://148.85.189.15/posts/"+user_input);
 //            URL githubSearc   hUrl = new URL("https://api.androidhive.info/contacts/");
             //URL githubSearchUrl = new URL("http://api.androidhive.info/contacts/contacts/0/33");
             //URL githubSearchUrl = new URL("https://api.github.com/search/repositories?" +

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.priti.live.R;
@@ -36,6 +37,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public ViewHolder(View v) {
             super(v);
             layout = v;
+
+
             txtHeader = (TextView) v.findViewById(R.id.firstLine);
             txtFooter = (TextView) v.findViewById(R.id.secondLine);
             txtDay = (TextView) v.findViewById(R.id.thirdLine);
@@ -96,18 +99,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             }
             if (key == "MealTime"){
                 mealTime = temp.get(key);
-            }
-            if (key == "Day"){
-                day = temp.get(key);
-                if (day == "Breakfast"){
+                Log.e("sdsd", "see the day "+ mealTime);
+                if (mealTime.equals("Breakfast")){
                     holder.foodTime.setImageResource(R.drawable.break_fast);
                 }
-                else if(day == "Lunch"){
-                    holder.foodTime.setImageResource(R.mipmap.lunch_try_1);
+                else if(mealTime.equals("Lunch")){
+                    holder.foodTime.setImageResource(R.drawable.lunch);
                 }
                 else{
                     holder.foodTime.setImageResource(R.drawable.dinner);
                 }
+            }
+            if (key == "Day"){
+                day = temp.get(key);
+
             }
         }
         holder.txtHeader.setText(name);

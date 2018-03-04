@@ -24,8 +24,9 @@ class food_Solution:
 		# print self.food_names
 
 	def which_meal(self, time):
-		print time
+		
 		time = int(time)
+		print time
 		day_time  = ''
 		if time >=0 and time <=10:
 			day_time = 'Breakfast'
@@ -35,11 +36,15 @@ class food_Solution:
 			day_time = 'Dinner'
 		return day_time
 
-	def user_speech(self, text):
+	def user_speech(self, text, incoming_ip_add):
 		text = text.split('.')
 		self.database_found_food_keywords = {}
+
 		for line in text:
 			# line_text = self.tknzr.tokenize(line)
+			text = ''
+			line = line.lower()
+			print line
 			for food_word in self.food_names:
 				if food_word in line:
 					# print food_word
@@ -47,16 +52,29 @@ class food_Solution:
 						calorie_val = self.calorie.cal_calorie(food_word.lower())
 					except:
 						calorie_val = -1
+					# if food_word or food_word.title() in self.database_found_food_keywords: continue
+					food_word = food_word.title()
+
 					self.database_found_food_keywords[food_word] = []	
 					self.database_found_food_keywords[food_word].append(calorie_val)
 					hours =  time.strftime("%H")
 					weekday = self.day_no_to_week[datetime.datetime.today().weekday()]
 					self.database_found_food_keywords[food_word].append(self.which_meal(hours) )
 					self.database_found_food_keywords[food_word].append(weekday)
-		# pprint(self.database_found_food_keywords)
-		return self.database_found_food_keywords
-		
+					text += str(incoming_ip_add) + ","
+					text += str(food_word) + ","
+					text += str(calorie_val) + ","
+					text += str(self.which_meal(hours)) + ","
+					text += str(weekday) + "\n"
+					self.append_to_file("database.csv", text)
 
+		pprint(self.database_found_food_keywords)
+
+		return self.database_found_food_keywords
+	
+	def append_to_file(self, fileName, var):
+		with open(fileName, "a") as myfile:
+			myfile.write(var)
 
 	def read_file(self, loc):
 		with open(loc, "r") as f:

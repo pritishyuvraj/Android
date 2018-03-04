@@ -51,12 +51,12 @@
             <EditText
                 android:id="@+id/foodMessage"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_weight="5"
-
+                android:inputType="textCapSentences|textMultiLine"
                 android:gravity="top|left"
-                android:inputType="textMultiLine|textCapSentences"
+                android:maxLength="2000"
                 android:maxLines="5"
                 android:minLines="3"
                 android:scrollHorizontally="false"
@@ -74,3 +74,4 @@
         </LinearLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
+    <!--android:inputType="textMultiLine|textCapSentences"-->
