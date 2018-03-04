@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,9 +27,13 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     private TextView mSearchResultsTextView;
     private String TAG = MainActivity.class.getSimpleName();
@@ -40,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //                Recycler View
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(MainActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     public void on_call_for_REST(View view){
@@ -56,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
 //            URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/posts");
             String temp_url = "http://148.85.189.171:8000/posts/"+user_input;
             Log.e("URl", "temp URL " + temp_url);
-            URL githubSearchUrl = new URL("http://148.85.189.245/posts/"+user_input);
+//            URL githubSearchUrl = new URL("http://148.85.189.245/posts/"+user_input);
+            URL githubSearchUrl = new URL("http://148.85.189.245:8080/posts/"+user_input);
 //            URL githubSearc   hUrl = new URL("https://api.androidhive.info/contacts/");
             //URL githubSearchUrl = new URL("http://api.androidhive.info/contacts/contacts/0/33");
             //URL githubSearchUrl = new URL("https://api.github.com/search/repositories?" +
@@ -131,24 +143,39 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String githubSearchResults) {
 
             if (githubSearchResults != null && !githubSearchResults.equals("")) {
-                LinearLayout root=(LinearLayout)findViewById(R.id.FoodNames_appear_here);
-                TextView[] t=new TextView[database.size()];
-                LinearLayout.LayoutParams dim=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+
+                List<String> input = new ArrayList<>();
+//                for (int i = 0; i < 100; i++) {
+//                    input.add("Test" + i);
+//                }// define an adapter
+
+
+
+//                LinearLayout root=(LinearLayout)findViewById(R.id.FoodNames_appear_here);
+//                TextView[] t=new TextView[database.size()];
+//                LinearLayout.LayoutParams dim=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 for(int i = 0; i<database.size(); i++){
                     HashMap<String, String> temp = new HashMap<>();
                     temp = database.get(i);
-                    t[i]=new TextView(MainActivity.this);
+//                    t[i]=new TextView(MainActivity.this);
 //                    t[i] = (TextView) findViewById(R.id.test_string);
 //                    t[i] =
 //                t[i].setLayoutParams(dim);
-                    String test = null;
+                    String test = "";
                     for(String key: temp.keySet()){
                         test += key + "-> " + temp.get(key) + "\n";
 
                     }
-                    t[i].setText(test);
-                    root.addView(t[i]);
+                    Log.e("look at the message", "find " + test);
+                    input.add("Test" + test);
+
+
+//                    t[i].setText(test);
+//                    root.addView(t[i]);
                 }
+                mAdapter = new MyAdapter(input);
+                recyclerView.setAdapter(mAdapter);
 //                Initial View text
 //                mSearchResultsTextView.setText(test);
 
