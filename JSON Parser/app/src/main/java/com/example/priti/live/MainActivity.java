@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 //            URL githubSearchUrl = new URL("https://jsonplaceholder.typicode.com/posts");
             String temp_url = "http://148.85.189.171:8000/posts/"+user_input;
             Log.e("URl", "temp URL " + temp_url);
-            URL githubSearchUrl = new URL("http://148.85.189.171:8000/posts/"+user_input);
+            URL githubSearchUrl = new URL("http://148.85.189.245/posts/"+user_input);
 //            URL githubSearc   hUrl = new URL("https://api.androidhive.info/contacts/");
             //URL githubSearchUrl = new URL("http://api.androidhive.info/contacts/contacts/0/33");
             //URL githubSearchUrl = new URL("https://api.github.com/search/repositories?" +
@@ -87,16 +87,29 @@ public class MainActivity extends AppCompatActivity {
                         Log.e(TAG, "Key value " + jsonObj.optJSONObject(i));
                         JSONObject temp_temp = jsonObj.optJSONObject(i);
 
-                        int id = temp_temp.getInt("id");
-                        int userId = temp_temp.getInt("userId");
-                        String title = temp_temp.getString("title");
-                        String body = temp_temp.getString("body");
+//                        int id = temp_temp.getInt("id");
+//                        int userId = temp_temp.getInt("userId");
+//                        String title = temp_temp.getString("title");
+//                        String body = temp_temp.getString("body");
+//                        Log.e("Tag1", "See the message " + title);
+//                        HashMap<String, String> temp = new HashMap<>();
+//                        temp.put("id", Integer.toString(id));
+//                        temp.put("userid", Integer.toString(userId));
+//                        temp.put("title", title);
+//                        temp.put("body", body);
+
+                        String food_name = temp_temp.getString("food_name");
+                        String Calorie = temp_temp.getString("calorie");
+                        String time = temp_temp.getString("time");
+                        String day = temp_temp.getString("day");
                         Log.e("Tag1", "See the message " + title);
                         HashMap<String, String> temp = new HashMap<>();
-                        temp.put("id", Integer.toString(id));
-                        temp.put("userid", Integer.toString(userId));
-                        temp.put("title", title);
-                        temp.put("body", body);
+                        temp.put("food_name", food_name);
+                        temp.put("MealTime", time);
+                        temp.put("Calories", Calorie);
+                        temp.put("Day", day);
+
+
                         Log.e(TAG, "temp temp this" + title);
                         database.add(temp);
                         Log.e(TAG, "Adding to database"+ temp);

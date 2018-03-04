@@ -1,3 +1,8 @@
+# /var/www/demoapp/demoapp_uwsgi.sock
+# pritish@pritish-Inspiron-13-7378:/var/www/demoapp$ uwsgi --ini /var/www/demoapp/demoapp_uwsgi.ini
+# uwsgi --ini /var/www/demoapp/demoapp_uwsgi.ini
+
+# http://vladikk.com/2013/09/12/serving-flask-with-nginx-on-ubuntu/
 #!flask/bin/python
 
 from flask import Flask, jsonify
@@ -24,7 +29,7 @@ tasks = [
 }
 ]
 
-@app.route('/todo', methods = ['GET'])
+@app.route("/")
 def get_tasks():
 	# return jsonify({'tasks':tasks})
 	return "Hello friends"
@@ -101,11 +106,23 @@ def dummy(temp_task):
 	database = food_key.user_speech(temp_task)
 	print "\n\n", database, "\n\n"
 	# time.sleep(5)
-	return jsonify([{"id":1, "userId":2, "title":["lol", "lol", "lol"], "body":"sdasdasdasd"},
-		{"id":1, "userId":2, "title":["lol", "lol", "lol"], "body":"sdasdasdasd"}])
+	temp_dic = {}
+	return_array = []
+	for one_item in database:
+		print "See here", one_item, database[one_item]
+		temp_dic["food_name"] = one_item
+		temp_dic["calorie"] = database[one_item][0]
+		temp_dic['time'] = database[one_item][1]
+		temp_dic['day'] = database[one_item][2]
+		return_array.append(temp_dic)
+	print "\n\nOutput readY", return_array, "\n\n"
+	return jsonify(return_array)
+	# return jsonify([{"id":1, "userId":2, "title":["lol", "lol", "lol"], "body":"sdasdasdasd"},
+	# 	{"id":1, "userId":2, "title":["lol", "lol", "lol"], "body":"sdasdasdasd"}])
+
 
 if __name__ == '__main__':	
-	app.run(host = "0.0.0.0", debug = True, port = 8000)
+	app.run(host = "0.0.0.0", debug = True, port = 8080)
 
 	#Commands for transmitting data using RESTful API
 	# curl -i -H "Content-Type: application/json" -X POST -d '{"title": "Read a book"}' http://localhost:5000/todo/api/v1.0/tasks
