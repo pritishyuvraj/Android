@@ -39,14 +39,16 @@ class food_Solution:
 	def user_speech(self, text, incoming_ip_add):
 		text = text.split('.')
 		self.database_found_food_keywords = {}
-
+		print text
 		for line in text:
 			# line_text = self.tknzr.tokenize(line)
 			text = ''
 			line = line.lower()
 			print line
 			for food_word in self.food_names:
+				food_word = food_word.lower()	
 				if food_word in line:
+				# if line.__contains__(' ' + food_word + ' '):
 					# print food_word
 					try:
 						calorie_val = self.calorie.cal_calorie(food_word.lower())
@@ -82,4 +84,4 @@ class food_Solution:
 
 if __name__ == '__main__':
 	fs = food_Solution()
-	fs.user_speech("Hi I am craving to eat chicken. It's probably the best dish in town. I wish to eat rice too")
+	fs.user_speech("Hi I am craving to eat chicken and Pancakes. It's probably the best dish in town. I wish to eat rice too", "fake")
