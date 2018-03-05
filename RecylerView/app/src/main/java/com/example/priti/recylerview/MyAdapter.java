@@ -34,10 +34,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
     }
 
-    public void add(int position, String item) {
-        values.add(position, item);
-        notifyItemInserted(position);
-    }
+//    public void add(int position, String item) {
+//        values.add(position, item);
+//        notifyItemInserted(position);
+//    }
 
     public void remove(int position) {
         values.remove(position);
