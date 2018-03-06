@@ -279,23 +279,34 @@ class FullyConnectedNet(object):
     # layer, etc.                                                              #
     ############################################################################
     #FeedForward network 
-    X_reshaped = X.reshape(X.shape[0], -1)
-    for i in xrange(self.num_layers):
-        if i == 0:
-            # print i, X.shape, self.params['W1'].shape
-            scores[i] = np.maximum(0, X.dot(self.params['W1'] + self.params['b1']))
-        elif i != self.num_layers - 1:
-            # print i, scores[i-1].shape, self.params['W' + str(i+1)].shape
-            scores[i] = np.maximum(0, 
-                scores[i-1].dot(self.params['W'+str(i+1)]) + self.params['b' + str(i+1)])
-        else:
-            #Softmax layer 
-            pass
-            # print i, scores[i-1].shape, self.params['W' + str(i+1)].shape
-            scores[i] = scores[i-1].dot(
-                self.params['W' + str(i+1)] + self.params['b' + str(i+1)])
-
-
+    # X_reshaped = X.reshape(X.shape[0], -1)
+    # for i in xrange(self.num_layers):
+    #     if i == 0:
+    #         # print i, X.shape, self.params['W1'].shape
+    #         scores[i] = np.maximum(0, X_reshaped.dot(self.params['W1'] + self.params['b1']))
+    #     elif i != self.num_layers - 1:
+    #         # print i, scores[i-1].shape, self.params['W' + str(i+1)].shape
+    #         scores[i] = np.maximum(0, 
+    #             scores[i-1].dot(self.params['W'+str(i+1)]) + self.params['b' + str(i+1)])
+    #     else:
+    #         #Softmax layer 
+    #         pass
+    #         # print i, scores[i-1].shape, self.params['W' + str(i+1)].shape
+    #         scores[i] = scores[i-1].dot(
+    #             self.params['W' + str(i+1)] + self.params['b' + str(i+1)])
+    cache_store = {}
+    cacheReLU_store = {}
+    input_to_network = X
+    for i in xrange(self.num_layers - 1):
+        # print "i -> ", i,
+        
+        # print "x, w, b", input_to_network.shape, self.params['W'+str(i+1)].shape, self.params['b'+str(i+1)].shape
+        
+        x1, cache = affine_forward(input_to_network, self.params['W'+str(i+1)], self.params['b'+str(i+1)])
+        cache_store["cache"+str(i+1)] = cache
+        input_to_network, cacheReLU = relu_forward(x1)
+        cacheReLU_store["cacheReLU"+str(i+1)] = cacheReLU
+    scores, cache_store['cache'+str(self.num_layers)] = affine_forward(input_to_network, self.params['W'+str(self.num_layers)], self.params['b'+str(self.num_layers)])
 
 
     ############################################################################
@@ -321,22 +332,68 @@ class FullyConnectedNet(object):
     # of 0.5 to simplify the expression for the gradient.                      #
     ############################################################################
     #Softmax loss 
-    layers = scores.keys()
-    loss, d_y = softmax_loss(scores[layers[-1]], y)
-    for i in xrange(1, self.num_layers + 1):
-        # print self.params['W' + str(i)].shape
-        loss += 0.5*self.reg*np.sum((self.params['W' + str(i)]**2))
+    # layers = scores.keys()
+    # loss, d_y = softmax_loss(scores[layers[-1]], y)
+    # for i in xrange(1, self.num_layers + 1):
+    #     # print self.params['W' + str(i)].shape
+    #     loss += 0.5*self.reg*np.sum((self.params['W' + str(i)]**2))
 
+    # # print scores.keys()
+    # # print "X", X_reshaped.shape, self.params['W1'].shape
+    # # print "for y2", scores[0].shape, self.params['W2'].shape
+    # # print "for y3", scores[1].shape, self.params['W3'].shape
+    # for i in xrange(self.num_layers-1, -1, -1):
+    #     # print "i", i
+    #     if i == self.num_layers-1:
+    #         #Softmax Layer
+    #         # print self.params['W3'].shape
+    #         grads['W'+str(i+1)] = scores[i-1].T.dot(d_y)
+    #         # print self.params['b' + str(i+1)].shape, d_y.shape
+    #         grads['b' + str(i+1)] = np.sum(d_y, axis = 0)
 
-    for i in xrange(self.num_layers-1, -1, -1):
-        if i == self.num_layers-1:
-            #Softmax Layer
-            # print self.params['W3'].shape
-            grads['W'+str(i+1)] = scores[i-1].T.dot(d_y)
-            grads['b' + str(i+1)] = 
+    #         #Regularization 
+    #         grads['W'+ str(i+1)] += self.reg*self.params['W'+ str(i+1)]
+
+    #         temp_dy_iG_dy_iS = d_y.dot(self.params['W' + str(i+1)].T)
+    #         # print self.params['W'+str(i+1)].shape
+    #     else:
+    #         pass
+    #         #RELU Lyers
+    #         # print i, temp_dy_iG_dy_iS.shape, scores[i-1].shape, self.params['b'+str(i+1)].shape
+    #         temp_dy_iG_dy_iS[scores[i] < 0.0]  = 0
+    #         if i-1 >= 0:
+    #             y1 = scores[i-1]
+    #         else:
+    #             y1 = X_reshaped
+    #         grads['W'+str(i+1)] = temp_dy_iG_dy_iS.T.dot(y1).T
+    #         grads['W'+str(i+1)] += self.reg*self.params['W' + str(i+1)]
+    #         grads['b'+str(i+1)] = np.sum(temp_dy_iG_dy_iS, axis = 0)
+
+    #         temp_dy_iG_dy_iS = temp_dy_iG_dy_iS.dot(self.params['W'+str(i+1)].T)
+            # grads['W'+str(i+1)] = 
+            # a, b, c = affine_backward(d_y, scores[i-1])
+            # grads['W3'] = b 
+            # grads['b3'] = c 
+            # grads['b' + str(i+1)] = 
         # print i, layers
         # print d_y.shape, scores[layers[i-1]].shape
         
+
+    #Using functions
+    loss, d_y = softmax_loss(scores, y)
+    # print cacheReLU_store
+    for i in xrange(1, self.num_layers+1):
+        loss += 0.5*self.reg*np.sum(self.params['W'+str(i)]**2)
+    dy_yi_yj, dW, db = affine_backward(d_y, cache_store["cache"+str(self.num_layers)])
+    dW += self.reg*self.params['W'+str(i)]
+    grads['W'+str(self.num_layers)] = dW 
+    grads['b'+str(self.num_layers)] = db 
+    l = self.num_layers-1
+    for i in xrange(self.num_layers-1):
+        temp_back_prop = relu_backward(dy_yi_yj, cacheReLU_store["cacheReLU"+str(l-i)])
+        dy_yi_yj, dW, db = affine_backward(temp_back_prop, cache_store["cache"+str(l-i)])
+        grads["W"+str(l-i)] = dW + self.reg*self.params['W'+str(l-i)]
+        grads['b'+str(l-i)] = db
     # print loss
     ############################################################################
     #                             END OF YOUR CODE                             #
