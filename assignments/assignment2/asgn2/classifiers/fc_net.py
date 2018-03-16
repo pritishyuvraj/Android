@@ -301,6 +301,7 @@ class FullyConnectedNet(object):
     cache_store = {}
     cacheReLU_store = {}
     cacheBatch_dict = {}
+    cacheDropout_dict = {}
     input_to_network = X
     # print "one iteration done", self.params.keys()
     for i in xrange(self.num_layers - 1):
@@ -315,6 +316,9 @@ class FullyConnectedNet(object):
             x1, cacheBatch_dict["cacheBatch"+str(i+1)] = batchnorm_forward(x1, \
                 gamma=self.params['gamma'+str(i+1)], beta=self.params['beta'+str(i+1)], \
                 bn_param = self.bn_params[i-1])
+        if self.use_dropout:
+            x1, cacheDropout_dict["cacheDropout"+str(i+1)] = dropout_forward(x1, \
+                self.dropout_param)
         # print x1.shape
         input_to_network, cacheReLU = relu_forward(x1)
         cacheReLU_store["cacheReLU"+str(i+1)] = cacheReLU
@@ -394,6 +398,7 @@ class FullyConnectedNet(object):
 
     #Using functions
     loss, d_y = softmax_loss(scores, y)
+    temp_back_prop = d_y
     # print cacheReLU_store
     for i in xrange(1, self.num_layers+1):
         loss += 0.5*self.reg*np.sum(self.params['W'+str(i)]**2)
@@ -403,6 +408,8 @@ class FullyConnectedNet(object):
     grads['b'+str(self.num_layers)] = db 
     l = self.num_layers-1
     for i in xrange(self.num_layers-1):
+        if self.use_dropout:
+            dy_yi_yj = dropout_backward(dy_yi_yj, cacheDropout_dict["cacheDropout"+str(l-i)])
         temp_back_prop = relu_backward(dy_yi_yj, cacheReLU_store["cacheReLU"+str(l-i)])
         if self.use_batchnorm:
             temp_back_prop, dgamma, dbeta = batchnorm_backward(temp_back_prop, cacheBatch_dict["cacheBatch"+str(l-i)])
