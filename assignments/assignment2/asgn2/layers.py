@@ -187,7 +187,7 @@ def batchnorm_forward(x, gamma, beta, bn_param):
   running_mean = bn_param.get('running_mean', np.zeros(D, dtype=x.dtype))
   running_var = bn_param.get('running_var', np.zeros(D, dtype=x.dtype))
 
-  out, cache = None, None
+  out, cache = None, {}
   if mode == 'train':
     #############################################################################
     # TODO: Implement the training-time forward pass for batch normalization.   #
@@ -202,18 +202,39 @@ def batchnorm_forward(x, gamma, beta, bn_param):
     # the momentum variable to update the running mean and running variance,    #
     # storing your result in the running_mean and running_var variables.        #
     #############################################################################
-    pass
+    # print "Shape of x", x.shape
+    mean = (1.0/x.shape[0])*np.sum(x, axis = 0)
+    # print "Shape of mean", mean.shape
+    sigma = (1.0/x.shape[0])*np.sum(np.subtract(x, mean)**2, axis = 0)
+    # print "Shape of sigma", sigma.shape
+    x_hat = np.subtract(x, mean)/((sigma+eps)**0.5)
+    # print "Shape of x_hat", x_hat.shape
+    out = np.multiply(gamma, x_hat) + beta
+    # print "Shape of out ", out.shape
+    running_mean = momentum * running_mean + (1 - momentum) * mean
+    running_var = momentum * running_var + (1 - momentum) * sigma
+    cache['mean'] = mean
+    cache['sigma'] = sigma
+    cache['x_hat'] = x_hat
+    cache['out'] = out
+    cache['eps'] = eps
+    cache['gamma'] = gamma
+    cache['beta'] = beta
     #############################################################################
     #                             END OF YOUR CODE                              #
     #############################################################################
   elif mode == 'test':
+  	# print x.shape, bn_param['running_mean'].shape, bn_param["running_var"].shape, eps
+  	x = np.subtract(x, bn_param["running_mean"])/(np.sqrt(np.add(bn_param["running_var"], eps)))
+  	out = gamma*x + beta
+  	# print out.shape
     #############################################################################
     # TODO: Implement the test-time forward pass for batch normalization. Use   #
     # the running mean and variance to normalize the incoming data, then scale  #
     # and shift the normalized data using gamma and beta. Store the result in   #
     # the out variable.                                                         #
     #############################################################################
-    pass
+    
     #############################################################################
     #                             END OF YOUR CODE                              #
     #############################################################################
@@ -249,7 +270,15 @@ def batchnorm_backward(dout, cache):
   # TODO: Implement the backward pass for batch normalization. Store the      #
   # results in the dx, dgamma, and dbeta variables.                           #
   #############################################################################
-  pass
+  print dout.shape, cache.keys(), cache['x_hat'].shape
+  dbeta = np.sum(dout, axis = 0)
+  dgamma = np.sum(dout*cache['x_hat'], axis = 0)
+  print dbeta.shape, dgamma.shape
+  denominator = float(cache['out'].shape[0])*np.sqrt(cache['sigma']+cache['eps'])
+  df_dx_hat = dout*cache['gamma']
+  numerator = (cache['out'].shape[0]*df_dx_hat) - np.sum(df_dx_hat, axis = 0) \
+  - cache['x_hat']*np.sum(df_dx_hat*cache['x_hat'], axis = 0)
+  dx = numerator/denominator
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
