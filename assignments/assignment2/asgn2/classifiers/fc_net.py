@@ -220,6 +220,10 @@ class FullyConnectedNet(object):
         bias = 'b' + str(i+1)
         self.params[weight] = np.random.normal(scale = weight_scale, size = (left, right))
         self.params[bias] = np.zeros(right)
+        if self.use_batchnorm and i != len(hidden_dims):
+            self.params['gamma'+str(i+1)] = np.ones(right)
+            self.params['beta'+str(i+1)] = np.zeros(right)
+    # print self.params.keys()
     # print self.params.keys()
     ############################################################################
     #                             END OF YOUR CODE                             #
@@ -296,18 +300,27 @@ class FullyConnectedNet(object):
     #             self.params['W' + str(i+1)] + self.params['b' + str(i+1)])
     cache_store = {}
     cacheReLU_store = {}
+    cacheBatch_dict = {}
     input_to_network = X
+    # print "one iteration done", self.params.keys()
     for i in xrange(self.num_layers - 1):
         # print "i -> ", i,
         
         # print "x, w, b", input_to_network.shape, self.params['W'+str(i+1)].shape, self.params['b'+str(i+1)].shape
-        
+        # print i, self.params['W'+str(i+1)].shape#, self.params['b'+str(i+1)].shape
         x1, cache = affine_forward(input_to_network, self.params['W'+str(i+1)], self.params['b'+str(i+1)])
         cache_store["cache"+str(i+1)] = cache
+        # print x1.shape, self.params['gamma'+str(i+1)].shape, self.params['beta'+str(i+1)].shape
+        if self.use_batchnorm:
+            x1, cacheBatch_dict["cacheBatch"+str(i+1)] = batchnorm_forward(x1, \
+                gamma=self.params['gamma'+str(i+1)], beta=self.params['beta'+str(i+1)], \
+                bn_param = self.bn_params[i-1])
+        # print x1.shape
         input_to_network, cacheReLU = relu_forward(x1)
         cacheReLU_store["cacheReLU"+str(i+1)] = cacheReLU
+        # print self.params['b'+str(self.num_layers)]
     scores, cache_store['cache'+str(self.num_layers)] = affine_forward(input_to_network, self.params['W'+str(self.num_layers)], self.params['b'+str(self.num_layers)])
-
+    # print "one iteration done", self.params.keys()
 
     ############################################################################
     #                             END OF YOUR CODE                             #
@@ -391,6 +404,10 @@ class FullyConnectedNet(object):
     l = self.num_layers-1
     for i in xrange(self.num_layers-1):
         temp_back_prop = relu_backward(dy_yi_yj, cacheReLU_store["cacheReLU"+str(l-i)])
+        if self.use_batchnorm:
+            temp_back_prop, dgamma, dbeta = batchnorm_backward(temp_back_prop, cacheBatch_dict["cacheBatch"+str(l-i)])
+            grads['gamma'+str(l-i)] = dgamma
+            grads['beta'+str(l-i)] = dbeta
         dy_yi_yj, dW, db = affine_backward(temp_back_prop, cache_store["cache"+str(l-i)])
         grads["W"+str(l-i)] = dW + self.reg*self.params['W'+str(l-i)]
         grads['b'+str(l-i)] = db

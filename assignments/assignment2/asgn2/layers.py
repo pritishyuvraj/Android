@@ -26,10 +26,13 @@ def affine_forward(x, w, b):
   #############################################################################
   # print x.shape, w.shape, b.shape
   # list_of_dimensions = x.shape[1:]
+
   mul = lambda x, y: x*y
   x_shape_1 = reduce(mul, x.shape[1:])
-  # print x_shape_1
+
+  # print x_shape_1s
   x_reshaped = x.reshape(x.shape[0], x_shape_1)
+  # print x.shape, x_shape_1, x_reshaped.shape, type(b), b
   # print x_reshaped.shape, w.shape, b.shape
   # out = np.maximum(0, x_reshaped.dot(w) + b)
   out = x_reshaped.dot(w) + b
@@ -270,10 +273,10 @@ def batchnorm_backward(dout, cache):
   # TODO: Implement the backward pass for batch normalization. Store the      #
   # results in the dx, dgamma, and dbeta variables.                           #
   #############################################################################
-  print dout.shape, cache.keys(), cache['x_hat'].shape
+  # print dout.shape, cache.keys(), cache['x_hat'].shape
   dbeta = np.sum(dout, axis = 0)
   dgamma = np.sum(dout*cache['x_hat'], axis = 0)
-  print dbeta.shape, dgamma.shape
+  # print dbeta.shape, dgamma.shape
   denominator = float(cache['out'].shape[0])*np.sqrt(cache['sigma']+cache['eps'])
   df_dx_hat = dout*cache['gamma']
   numerator = (cache['out'].shape[0]*df_dx_hat) - np.sum(df_dx_hat, axis = 0) \
@@ -308,7 +311,15 @@ def batchnorm_backward_alt(dout, cache):
   # should be able to compute gradients with respect to the inputs in a       #
   # single statement; our implementation fits on a single 80-character line.  #
   #############################################################################
-  pass
+  # print dout.shape, cache.keys(), cache['x_hat'].shape
+  dbeta = np.sum(dout, axis = 0)
+  dgamma = np.sum(dout*cache['x_hat'], axis = 0)
+  # print dbeta.shape, dgamma.shape
+  denominator = float(cache['out'].shape[0])*np.sqrt(cache['sigma']+cache['eps'])
+  df_dx_hat = dout*cache['gamma']
+  numerator = (cache['out'].shape[0]*df_dx_hat) - np.sum(df_dx_hat, axis = 0) \
+  - cache['x_hat']*np.sum(df_dx_hat*cache['x_hat'], axis = 0)
+  dx = numerator/denominator
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
