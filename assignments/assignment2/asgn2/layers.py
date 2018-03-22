@@ -469,6 +469,7 @@ def conv_forward_naive(x, w, b, conv_param):
   				w_ += 1 
   			h_ += 1
   # print "Output", out.shape, N, F, x_axis, y_axis, x.shape
+  # print out.shape
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -517,40 +518,10 @@ def conv_backward_naive(dout, cache):
   				*dout[image_no, feature_no, along_y, along_x]
   				w_ += 1 
   			h_ += 1
+  # print dx.shape
   dx = dx[:,:,pad:-pad,pad:-pad]
   db = np.sum(dout, axis = (0, 2, 3))
-
-  # N, F, Hout, Wout = dout.shape
-  # x, w, b, conv_param = cache
-  # s = conv_param['stride']
-  # p = conv_param['pad']
-  # N, C, H, W = x.shape
-  # F, C, HH, WW = w.shape
-
-  # dx = np.zeros(x.shape)
-  # dw = np.zeros(w.shape)
-
-  # for i in range(N):
-  #   for f in range(F):
-  #     outh = 0
-  #     # print image.shape
-  #     # print w[f].shape
-  #     for j in range(0,Hout):
-  #       outw = 0
-  #       for k in range(0,Wout):
-  #         jStride = j * s
-  #         kStride = k * s
-  #         # print jStride,jStride+HH," , ",kStride,kStride+WW,"=",f ,'*',outh,outw
-  #         dx[i,:, jStride:jStride + HH, kStride:kStride + WW] += w[f] * dout[i,f,j, k]
-  #         dw[f,:,:,:] += x[i,:, jStride:jStride + HH, kStride:kStride + WW]*dout[i,f,j, k]
-  #         # out[i,f,outh, outw] = np.sum(image[:, j:j + HH, k:k + WW] * w[f]) + b[f]
-  #         outw += 1
-
-  #       outh += 1
-
-  # # print dx
-  # dx = dx[:,:,p:-p,p:-p]
-  # db = np.sum(dout,axis=(0,2,3))
+  # print dx.shape
 
   #############################################################################
   #                             END OF YOUR CODE                              #
@@ -676,7 +647,14 @@ def spatial_batchnorm_forward(x, gamma, beta, bn_param):
   # version of batch normalization defined above. Your implementation should  #
   # be very short; ours is less than five lines.                              #
   #############################################################################
-  pass
+  N, C, H, W = x.shape 
+  x_ = np.swapaxes(x, 0, 1)
+  x_ = np.reshape(x_, (C, -1))
+  x_ = np.swapaxes(x_, 0, 1)
+  out_, cache = batchnorm_forward(x_, gamma, beta, bn_param)
+  out_ = np.swapaxes(out_, 0, 1)
+  out_ = np.reshape(out_, (C, N, H, W))
+  out = np.swapaxes(out_, 0, 1)
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -706,7 +684,16 @@ def spatial_batchnorm_backward(dout, cache):
   # version of batch normalization defined above. Your implementation should  #
   # be very short; ours is less than five lines.                              #
   #############################################################################
-  pass
+  N, C, H, W = dout.shape
+  dout_ = np.swapaxes(dout, 0, 1)
+  dout_ = np.reshape(dout_, (C, -1))
+  dout_ = np.swapaxes(dout_, 0, 1)
+  dx_, dgamma_, dbeta_ = batchnorm_backward(dout_, cache)
+  dx_ = np.swapaxes(dx_, 0, 1)
+  dx_ = np.reshape(dx_, (C, N, H, W))
+  dx = np.swapaxes(dx_, 0, 1)
+  dgamma = dgamma_
+  dbeta = dbeta_
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
