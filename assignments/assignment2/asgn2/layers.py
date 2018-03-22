@@ -423,7 +423,7 @@ def conv_forward_naive(x, w, b, conv_param):
 
   Returns a tuple of:
   - out: Output data, of shape (N, F, H', W') where H' and W' are given by
-    H' = 1 + (H + 2 * pad - HH) / stride
+    H' = 1 + (H + 2 * pad - HH) / 	stride
     W' = 1 + (W + 2 * pad - WW) / stride
   - cache: (x, w, b, conv_param)
   """
@@ -432,7 +432,43 @@ def conv_forward_naive(x, w, b, conv_param):
   # TODO: Implement the convolutional forward pass.                           #
   # Hint: you can use the function np.pad for padding.                        #
   #############################################################################
-  pass
+  # print type(x), type(w), type(b), type(conv_param)
+  # print x.shape, w.shape, b.shape, conv_param.keys(), conv_param['pad']
+  N = x.shape[0]
+  C = x.shape[1]
+  H = x.shape[2]
+  W = x.shape[3]
+  F = w.shape[0]
+  HH = w.shape[2]
+  WW = w.shape[3]
+  stride = conv_param['stride']
+  pad = conv_param['pad']
+
+  
+
+  x_axis = (( x.shape[3] - w.shape[3] + 2*conv_param['pad'] )/conv_param['stride'] ) + 1
+  y_axis = (( x.shape[2] - w.shape[2] + 2*conv_param['pad'])/conv_param['stride']) + 1
+
+  x = np.pad(x, ((0, 0), (0, 0), (pad, pad), (pad, pad)), 'constant', constant_values = 0)
+  # print "Shape of x", x.shape, x_axis, y_axis, stride
+  out = np.zeros([N, F, y_axis, x_axis])
+
+  for n, image in enumerate(x):
+  	for w_n, weight in enumerate(w):
+  		h_ = 0
+  		# print weight.shape, bias
+  		for along_x_axis in xrange(x_axis):
+  			w_ = 0 
+  			for along_y_axis in xrange(y_axis):
+  				# print along_x_axis, along_y_axis, HH, WW, x_axis
+  				
+  				along_x = along_x_axis*stride
+  				along_y = along_y_axis*stride
+  				# print along_x_axis, WW, along_y_axis, HH, x_axis
+  				out[n, w_n, h_, w_] =np.sum(image[:, along_x:along_x+HH, along_y:along_y+WW]*(weight)) + b[w_n]
+  				w_ += 1 
+  			h_ += 1
+  # print "Output", out.shape, N, F, x_axis, y_axis, x.shape
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -457,7 +493,65 @@ def conv_backward_naive(dout, cache):
   #############################################################################
   # TODO: Implement the convolutional backward pass.                          #
   #############################################################################
-  pass
+  N, F, Hout, Wout = dout.shape 
+  x, w, b, conv_param = cache 
+  F, C, HH, WW = w.shape
+  stride = conv_param['stride']
+  N, C, H, W = x.shape 
+  pad = conv_param['pad']
+  
+  dx =np.zeros(x.shape)
+  dw = np.zeros(w.shape)
+  for image_no in xrange(N):
+  	for feature_no in range(F):
+  		h_ = 0 
+  		for along_y in xrange(0, Hout):
+  			w_ = 0
+  			for along_x in xrange(0, Wout):
+  				along_y_ = along_y*stride
+  				along_x_ = along_x*stride
+  				dx[image_no, :, along_y_:along_y_+HH, along_x_:along_x_+WW] += \
+  				w[feature_no]*dout[image_no, feature_no, along_y, along_x]
+
+  				dw[feature_no,:,:,:] += x[image_no,:,along_y_:along_y_+HH,along_x_:along_x_+WW]\
+  				*dout[image_no, feature_no, along_y, along_x]
+  				w_ += 1 
+  			h_ += 1
+  dx = dx[:,:,pad:-pad,pad:-pad]
+  db = np.sum(dout, axis = (0, 2, 3))
+
+  # N, F, Hout, Wout = dout.shape
+  # x, w, b, conv_param = cache
+  # s = conv_param['stride']
+  # p = conv_param['pad']
+  # N, C, H, W = x.shape
+  # F, C, HH, WW = w.shape
+
+  # dx = np.zeros(x.shape)
+  # dw = np.zeros(w.shape)
+
+  # for i in range(N):
+  #   for f in range(F):
+  #     outh = 0
+  #     # print image.shape
+  #     # print w[f].shape
+  #     for j in range(0,Hout):
+  #       outw = 0
+  #       for k in range(0,Wout):
+  #         jStride = j * s
+  #         kStride = k * s
+  #         # print jStride,jStride+HH," , ",kStride,kStride+WW,"=",f ,'*',outh,outw
+  #         dx[i,:, jStride:jStride + HH, kStride:kStride + WW] += w[f] * dout[i,f,j, k]
+  #         dw[f,:,:,:] += x[i,:, jStride:jStride + HH, kStride:kStride + WW]*dout[i,f,j, k]
+  #         # out[i,f,outh, outw] = np.sum(image[:, j:j + HH, k:k + WW] * w[f]) + b[f]
+  #         outw += 1
+
+  #       outh += 1
+
+  # # print dx
+  # dx = dx[:,:,p:-p,p:-p]
+  # db = np.sum(dout,axis=(0,2,3))
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
