@@ -577,11 +577,32 @@ def max_pool_forward_naive(x, pool_param):
   #############################################################################
   # TODO: Implement the max pooling forward pass                              #
   #############################################################################
-  pass
+  N, C, H, W = x.shape 
+  pool_height = pool_param['pool_height']
+  stride = pool_param['stride']
+  pool_width = pool_param['pool_width']
+  hout = (H - pool_height)/stride + 1 
+  wout = (W - pool_width)/stride + 1 
+  out = np.zeros((N, C, hout, wout))
+  bool_ = np.zeros(x.shape)
+  for image_no in xrange(N):
+  	for class_no in xrange(C):
+  		for height in xrange(hout):
+  			for width in xrange(wout):
+  				stride_height = height*stride
+  				stride_weight = width*stride
+  				temp_x = x[image_no, class_no, stride_height:stride_height+pool_height, stride_weight:stride_weight+pool_height]
+  				temp_bool = bool_[image_no, class_no, stride_height:stride_height+pool_height\
+  				,stride_weight:stride_weight+pool_height]
+  				out[image_no, class_no, height, width] = np.max(temp_x)
+  				max_index = np.unravel_index(temp_x.argmax(), temp_x.shape)
+  				temp_bool[max_index[0], max_index[1]] += 1 
+
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
-  cache = (x, pool_param)
+  cache = (x, pool_param, bool_)
   return out, cache
 
 
@@ -600,7 +621,24 @@ def max_pool_backward_naive(dout, cache):
   #############################################################################
   # TODO: Implement the max pooling backward pass                             #
   #############################################################################
-  pass
+  x, pool_par, bool_ = cache
+  N, C, H, W = x.shape
+  dx = bool_
+  p_height = pool_par['pool_height']
+  p_width = pool_par['pool_width']
+  stride = pool_par['stride']
+  wout = (W - p_width)/stride + 1
+  hout = (H - p_height)/stride + 1
+  for image_no in xrange(N):
+  	for class_no in xrange(C):
+  		for height in xrange(hout):
+  			for width in xrange(wout):
+  				strideHeight = height*stride
+  				strideWidth = width*stride
+  				temp = dx[image_no, class_no, strideHeight:strideHeight+p_height, \
+  				strideWidth:strideWidth+p_height]
+  				temp *= dout[image_no, class_no, height, width]
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
