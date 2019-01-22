@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SingleFragment</string>
+    <string name="landscape_message">Landscape Message</string>
+    <string name="horizontal_message">Horizontal Message</string>
+</resources>

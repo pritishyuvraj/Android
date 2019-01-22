@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">StylesAndThemes</string>
+    <string name="Foursquare">Foursquare</string>
+    <string name="SalesForce">Salesforce</string>
+    <string name="Google">Google</string>
+    <string name="Facebook">Facebook</string>
+    <string name="Twitter">Twitter</string>
+    <string name="Aol">Aol</string>
+    <string name="Yahoo">Yahoo!</string>
+</resources>
