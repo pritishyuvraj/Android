@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <TextView
+        style="@style/CategoryStyle"
+        android:id="@+id/numbers"
+        android:background="@color/brown"
+        android:text="@string/numbers"
+        android:onClick="numbersOnClick"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <TextView
+        style="@style/CategoryStyle"
+        android:id="@+id/familyMembers"
+        android:background="@color/green"
+        android:text="@string/family"
+        android:onClick="familyOnClick"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <TextView
+        style="@style/CategoryStyle"
+        android:id="@+id/colors"
+        android:background="@color/violet"
+        android:text="@string/colors"
+        android:onClick="colorsOnClick"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <TextView
+        style="@style/CategoryStyle"
+        android:id="@+id/phrases"
+        android:background="@color/sky"
+        android:text="@string/phrases"
+        android:onClick="phrasesOnClick"
+        android:clickable="true"
+        android:focusable="true"/>
+</LinearLayout>
