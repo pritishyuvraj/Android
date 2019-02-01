@@ -19,22 +19,35 @@ public class Numbers extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.numbers);
 
-        ArrayList<String> planets = new ArrayList<>();
-        planets.add("Sun");
-        planets.add("Mercury");
-        planets.add("Venus");
-        planets.add("Earth");
-        planets.add("Mars");
-        planets.add("Jupiter");
-        planets.add("Saturn");
-        planets.add("Uranus");
-        planets.add("Neptune");
-        planets.add("Pluto");
+//        ArrayList<String> planets = new ArrayList<>();
+//        planets.add("Sun");
+//        planets.add("Mercury");
+//        planets.add("Venus");
+//        planets.add("Earth");
+//        planets.add("Mars");
+//        planets.add("Jupiter");
+//        planets.add("Saturn");
+//        planets.add("Uranus");
+//        planets.add("Neptune");
+//        planets.add("Pluto");
+//
+//        ArrayAdapter<String> planets_adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, planets);
+//
+//        GridView planets_list_view = findViewById(R.id.list);
+//        planets_list_view.setAdapter(planets_adapter);
 
-        ArrayAdapter<String> planets_adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, planets);
+        ArrayList<CustomModel> customListOfUsers = new ArrayList<>();
 
-        GridView planets_list_view = findViewById(R.id.list);
-        planets_list_view.setAdapter(planets_adapter);
+
+        customAdapter customAdapterUsers = new customAdapter(this, customListOfUsers);
+
+        ListView listView = (ListView) findViewById(R.id.list);
+        listView.setAdapter(customAdapterUsers);
+
+        CustomModel newmodel = new CustomModel("Pritish", "Yuvraj");
+        customAdapterUsers.add(newmodel);
+        CustomModel newmodel2 = new CustomModel("Kate", "Upton");
+        customAdapterUsers.add(newmodel2);
 
 
     }
