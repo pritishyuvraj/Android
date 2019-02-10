@@ -1,13 +1,11 @@
 package com.example.pritish.miwokapp_1;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,6 +14,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class customAdapter extends ArrayAdapter<CustomModel> {
+
+    private MediaPlayer mediaPlayer;
 
     public customAdapter(Context context, ArrayList<CustomModel> users){
         super(context, 0, users);
@@ -39,12 +39,18 @@ public class customAdapter extends ArrayAdapter<CustomModel> {
         tvName.setText(customModel.name);
         tvHome.setText(customModel.hometown);
 
+//        Reset mediaPlayer
+
 //        Media Player
-        final MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), customModel.songUrl);
+
 
         playAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkIfMediaPlayerIsInitialised();
+
+                mediaPlayer = MediaPlayer.create(getContext(), customModel.songUrl);
+
                 Log.e("TAG PRITISH", "Got the click from position: " + position + customModel.isPlayingAudio);
                 customModel.isPlayingAudio = !customModel.isPlayingAudio;
                 if(customModel.isPlayingAudio){
@@ -57,10 +63,36 @@ public class customAdapter extends ArrayAdapter<CustomModel> {
                     Toast.makeText(getContext(), "Pausing Audio play", Toast.LENGTH_SHORT).show();
                 }
 
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        Toast.makeText(getContext(), "Played the audio file to the end", Toast.LENGTH_SHORT).show();
+                        customModel.isPlayingAudio = false;
+                        playAudio.setText("Play");
+                        releaseMediaPlayerObject();
+                    }
+                });
 
             }
         });
+
+
         return convertView;
+    }
+
+    public void checkIfMediaPlayerIsInitialised(){
+        if(mediaPlayer != null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+
+        }
+    }
+
+    public void releaseMediaPlayerObject(){
+        if(mediaPlayer != null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 
 }
