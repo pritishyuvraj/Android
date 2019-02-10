@@ -5,17 +5,38 @@
     android:layout_height="wrap_content"
     android:id="@+id/list_custom"
     android:orientation="horizontal">
-
-    <TextView
+    <ImageView
+        android:padding="10sp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="Name"
-        android:id="@+id/left_text"/>
-
-    <TextView
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/image"/>
+    <LinearLayout
+        android:layout_marginLeft="5sp"
         android:layout_width="match_parent"
-        android:gravity="right"
-        android:text="HomeTown"
-        android:id="@+id/right_text" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:id="@+id/left_text"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="HomeTown"
+            android:id="@+id/right_text" />
+
+        <Button
+            android:id="@+id/soundButton"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play"/>
+            <!--android:clickable="true"-->
+            <!--android:focusable="true"-->
+            <!--android:onClick="playSound"/>-->
+    </LinearLayout>
+
 </LinearLayout>

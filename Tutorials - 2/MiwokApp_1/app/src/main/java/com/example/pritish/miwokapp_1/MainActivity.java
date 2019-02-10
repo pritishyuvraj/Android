@@ -17,25 +17,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void numbersOnClick(View v){
-        Toast.makeText(this, "Numbers touched", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Numbers touched", Toast.LENGTH_SHORT).show();
         Intent openNumbers = new Intent(MainActivity.this, Numbers.class);
         startActivity(openNumbers);
     }
 
     public void familyOnClick(View v){
-        Toast.makeText(this, "Family touched", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Family touched", Toast.LENGTH_SHORT).show();
         Intent openFamily = new Intent(MainActivity.this, FamilyNumbers.class);
         startActivity(openFamily);
     }
 
     public void colorsOnClick(View v){
-        Toast.makeText(this, "Colors touched", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Colors touched", Toast.LENGTH_SHORT).show();
         Intent openColors = new Intent(MainActivity.this, Colors.class);
         startActivity(openColors);
     }
 
     public void phrasesOnClick(View v){
-        Toast.makeText(this, "Phrases touched", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Phrases touched", Toast.LENGTH_SHORT).show();
         Intent openPhrases = new Intent(MainActivity.this, Phrases.class);
         startActivity(openPhrases);
     }

@@ -4,16 +4,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class Numbers extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +49,22 @@ public class Numbers extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(customAdapterUsers);
 
-        CustomModel newmodel = new CustomModel("Pritish", "Yuvraj");
+        CustomModel newmodel = new CustomModel("Pritish", "Yuvraj", R.drawable.ic_launcher_background, R.raw.guitar);
         customAdapterUsers.add(newmodel);
-        CustomModel newmodel2 = new CustomModel("Kate", "Upton");
+        CustomModel newmodel2 = new CustomModel("Kate", "Upton", R.drawable.ic_launcher_foreground, R.raw.piano);
         customAdapterUsers.add(newmodel2);
 
-
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.e("TAG PRITISH", "Got the click: " + position);
+//            }
+//        });
     }
+
+//    public void playSound(View v){
+//        Toast.makeText(this, "Started to play audio", Toast.LENGTH_SHORT).show();
+//        Log.e("TAG PRITISH", "Got the click");
+//
+//    }
 }

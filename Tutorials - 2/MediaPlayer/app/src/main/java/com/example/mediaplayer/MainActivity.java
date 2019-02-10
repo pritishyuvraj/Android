@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable updateSongTime = new Runnable() {
         @Override
         public void run() {
+            Log.e("Count", "Count is -> " + startTime);
             startTime = mediaPlayer.getCurrentPosition();
             tx1.setText(String.format("%d min, %d sec",
                     TimeUnit.MILLISECONDS.toMinutes((long) startTime),
