@@ -19,12 +19,14 @@ import java.util.ArrayList;
 
 public class Numbers extends AppCompatActivity {
 
+    public customAdapter customAdapterUsers;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.numbers);
         ArrayList<CustomModel> customListOfUsers = new ArrayList<>();
-        customAdapter customAdapterUsers = new customAdapter(this, customListOfUsers);
+        customAdapterUsers = new customAdapter(this, customListOfUsers);
 
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(customAdapterUsers);
@@ -43,4 +45,9 @@ public class Numbers extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        customAdapterUsers.releaseMediaPlayerObject();
+    }
 }

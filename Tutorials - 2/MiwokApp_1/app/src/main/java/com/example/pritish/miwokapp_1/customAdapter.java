@@ -1,6 +1,7 @@
 package com.example.pritish.miwokapp_1;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,16 +18,42 @@ public class customAdapter extends ArrayAdapter<CustomModel> {
 
     private MediaPlayer mediaPlayer;
 
+    private AudioManager mAudioManager;
+
+    public CustomModel customModel;
+
     public customAdapter(Context context, ArrayList<CustomModel> users){
         super(context, 0, users);
+        mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
     }
+
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+
+            if(focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
+                focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK){
+
+                mediaPlayer.pause();
+                mediaPlayer.seekTo(0);
+
+            }
+            else if(focusChange == AudioManager.AUDIOFOCUS_GAIN){
+                mediaPlayer.start();
+
+            } else if(focusChange == AudioManager.AUDIOFOCUS_LOSS){
+                releaseMediaPlayerObject();
+
+            }
+        }
+    };
 
     @Override
     public View getView(final int position,
                         View convertView,
                         ViewGroup parent) {
 
-        final CustomModel customModel = getItem(position);
+        customModel = getItem(position);
 
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_layout, parent, false);
@@ -47,6 +74,13 @@ public class customAdapter extends ArrayAdapter<CustomModel> {
         playAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
+                        AudioManager.STREAM_MUSIC,
+                        AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+
+                if(result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
+                    return ;
+                }
                 checkIfMediaPlayerIsInitialised();
 
                 mediaPlayer = MediaPlayer.create(getContext(), customModel.songUrl);
@@ -82,6 +116,7 @@ public class customAdapter extends ArrayAdapter<CustomModel> {
 
     public void checkIfMediaPlayerIsInitialised(){
         if(mediaPlayer != null){
+            Log.e("TAG PRITISH", "Existing Model present" + customModel.name);
             mediaPlayer.release();
             mediaPlayer = null;
 
@@ -89,10 +124,12 @@ public class customAdapter extends ArrayAdapter<CustomModel> {
     }
 
     public void releaseMediaPlayerObject(){
+        Log.e("TAG PRITISH", "see the name" + customModel.name);
         if(mediaPlayer != null){
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener);
     }
 
 }
