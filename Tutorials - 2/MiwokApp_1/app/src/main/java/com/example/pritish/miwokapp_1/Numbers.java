@@ -19,35 +19,16 @@ import java.util.ArrayList;
 
 public class Numbers extends AppCompatActivity {
 
-    public customAdapter customAdapterUsers;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.numbers);
-        ArrayList<CustomModel> customListOfUsers = new ArrayList<>();
-        customAdapterUsers = new customAdapter(this, customListOfUsers);
+        setContentView(R.layout.activity_category);
 
-        ListView listView = (ListView) findViewById(R.id.list);
-        listView.setAdapter(customAdapterUsers);
-
-        CustomModel newmodel = new CustomModel("Pritish", "Yuvraj", R.drawable.ic_launcher_background, R.raw.guitar);
-        customAdapterUsers.add(newmodel);
-        CustomModel newmodel2 = new CustomModel("Kate", "Upton", R.drawable.ic_launcher_foreground, R.raw.piano);
-        customAdapterUsers.add(newmodel2);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Item was clicked", Toast.LENGTH_SHORT).show();
-                Log.e("TAG PRITISH", "On Item Click was pressed");
-            }
-        });
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new NumbersFragment())
+                .commit();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        customAdapterUsers.releaseMediaPlayerObject();
-    }
 }
