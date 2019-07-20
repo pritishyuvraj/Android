@@ -26,4 +26,26 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+
+    // Litho
+    implementation 'com.facebook.litho:litho-core:0.29.0'
+    implementation 'com.facebook.litho:litho-widget:0.29.0'
+
+    annotationProcessor 'com.facebook.litho:litho-processor:0.29.0'
+
+    // SoLoader
+    implementation 'com.facebook.soloader:soloader:0.5.1'
+
+    // For integration with Fresco
+    implementation 'com.facebook.litho:litho-fresco:0.29.0'
+
+    // For testing
+    testImplementation 'com.facebook.litho:litho-testing:0.29.0'
+
+    // Sections
+    implementation 'com.facebook.litho:litho-sections-core:0.29.0'
+    implementation 'com.facebook.litho:litho-sections-widget:0.29.0'
+    compileOnly 'com.facebook.litho:litho-sections-annotations:0.29.0'
+
+    annotationProcessor 'com.facebook.litho:litho-sections-processor:0.29.0'
 }
