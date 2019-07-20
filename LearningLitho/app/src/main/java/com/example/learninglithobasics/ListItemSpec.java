@@ -24,10 +24,10 @@ import com.facebook.yoga.YogaEdge;
 @LayoutSpec
 public class ListItemSpec {
 
-  //  @OnCreateInitialState
-  //  static void createInitialState(ComponentContext c) {
-  //    // TODO: set an initial value for a state (optional method) https://fblitho.com/docs/state
-  //  }
+    @OnCreateInitialState
+    static void createInitialState(ComponentContext c) {
+      // TODO: set an initial value for a state (optional method) https://fblitho.com/docs/state
+    }
 
   @OnCreateLayout
   static Component onCreateLayout(
